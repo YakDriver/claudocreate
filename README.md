@@ -1,6 +1,6 @@
-# Generate AWSCC Documentation with Bedrock and Anthropic Computer Use
+# Generate Terraform AWS Provider Documentation with Bedrock and Anthropic Computer Use
 
-This solution will generate example Terraform configuration for the specified AWSCC resource, using Amazon Bedrock as LLM provider, Anthropic Sonnet 3.5 v2 and Anthropic Computer Use.
+This solution will generate example Terraform configuration for the specified Terraform AWS Provider resource, using Amazon Bedrock as LLM provider, Anthropic Sonnet 3.5 v2 and Anthropic Computer Use.
 
 The implementation of Anthropic Computer Use is adopted from [Anthropic Quickstarts](https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo) - MIT License.
 
@@ -10,7 +10,7 @@ Features:
 
 * Full orchestration of resource lifecycle (creation, testing, destruction)
 * Automated validation using `terraform apply`
-* Auto-generated templates ready for AWSCC repository pull requests
+* Auto-generated templates ready for Terraform AWS Provider repository pull requests
 * Concurrent resource processing with error handling
 * Comprehensive cleanup and artifact management
 
