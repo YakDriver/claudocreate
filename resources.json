@@ -1,0 +1,5 @@
+{
+    "target_resources": [
+        "awscc_sqs_queue_inline_policy"
+    ]
+}
