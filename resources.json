@@ -1,5 +1,6 @@
 {
     "target_resources": [
-        "awscc_sqs_queue_inline_policy"
+        "aws_apptest_test_case",
+        "aws_arczonalshift_practice_run_configuration"
     ]
 }

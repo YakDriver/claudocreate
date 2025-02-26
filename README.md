@@ -1,6 +1,6 @@
 # Generate Terraform AWS Provider Documentation with Bedrock and Anthropic Computer Use
 
-This solution will generate example Terraform configuration for the specified Terraform AWS Provider resource, using Amazon Bedrock as LLM provider, Anthropic Sonnet 3.5 v2 and Anthropic Computer Use.
+This solution will generate Terraform AWS Provider resource documentation for the specified AWS resource, using Amazon Bedrock, Anthropic Claude 3.5 Sonnet v2, and Anthropic Computer Use.
 
 The implementation of Anthropic Computer Use is adopted from [Anthropic Quickstarts](https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo) - MIT License.
 
@@ -13,12 +13,6 @@ Features:
 * Auto-generated templates ready for Terraform AWS Provider repository pull requests
 * Concurrent resource processing with error handling
 * Comprehensive cleanup and artifact management
-
-Sample output:
-
-* [awscc_lambda_version](https://registry.terraform.io/providers/hashicorp/awscc/latest/docs/resources/lambda_version)
-* [awscc_b2bi_capability](https://registry.terraform.io/providers/hashicorp/awscc/latest/docs/resources/b2bi_capability)
-* [awscc_datasync_task](https://registry.terraform.io/providers/hashicorp/awscc/latest/docs/resources/datasync_task)
 
 ## Prerequisites
 

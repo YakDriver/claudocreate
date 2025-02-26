@@ -299,7 +299,7 @@ async def process_resource(
     # Set Terraform init cache
     # os.environ["TF_PLUGIN_CACHE_DIR"]=os.path.join(os.getcwd(), "cache")       
 
-    logger.info(f"Processing resource: {resource_name}")
+    logger.info(f"=Processing resource: {resource_name}")
     skip = False
 
     # check for marker file and decide if we should proceed or not
@@ -317,6 +317,8 @@ async def process_resource(
         if marker_type in [FileMarker.CREATED, FileMarker.UPDATED] :
             for marker in FileMarker:
                 explorer.delete_marker(dir_path, marker_type=marker)
+
+    logger.info(f"Checking markers: {resource_name}")
 
     # deterministic check for certain file (it's faster than asking LLM to do it)
     if marker_type == FileMarker.DELETED:
@@ -347,6 +349,8 @@ async def process_resource(
             ):
             logger.warning(f"{FileMarker.CREATED} or {FileMarker.DELETED} or {FileMarker.REVIEWED} or {FileMarker.CLEANED} marker not found, Resource not ready for review : {resource_name}, skipping")
             skip = True
+
+    logger.info(f"Skipping? {skip}")
     
     if skip:
         end_time = time.perf_counter()
@@ -362,6 +366,8 @@ async def process_resource(
             working_directory=dir_path,
             current_date=datetime.today().strftime('%Y-%m-%d')
         )
+
+        logger.info(f"Running prompt: {user_prompt}")
 
         try:
             # Wait with timeout
@@ -469,7 +475,7 @@ def build_artifact(
     total_count = len(target_resources)
 
     for resource_name in sorted(target_resources):
-        short_resource_name = resource_name.split("awscc_")[1]
+        short_resource_name = resource_name.split("aws_")[1]
         dir_path = f"{source_local_dir}/{resource_name}"
 
         logger.info(f"##################### START : {resource_name} #############################")
@@ -490,7 +496,7 @@ def build_artifact(
                 logger.info(f"Marker found: {FileMarker.COPIED} - Skipping resource: {resource_name}, remove this marker manually if required")
                 skipped_count += 1
                 continue
-            logger.info(f"Processing resource: {resource_name}")
+            logger.info(f"Building artifact: {resource_name}")
 
             # Copy the main.tf to the `/output/examples/resources/{resource_name}`
             explorer.copy_file(
@@ -588,7 +594,7 @@ def write_artifact(
                 logger.info(f"Marker found: {FileMarker.COPIED} - Skipping resource: {resource_name}, remove this marker manually if required")
                 skipped_count += 1
                 continue
-            logger.info(f"Processing resource: {resource_name}")
+            logger.info(f"Writing artifact: {resource_name}")
 
             # Copy the main.tf to the `/output/examples/resources/{resource_name}`
             explorer.copy_file(
