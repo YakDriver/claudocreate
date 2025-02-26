@@ -38,13 +38,14 @@ Rules for Example Generation:
 * Unless necessary, avoid setting explicit dependencies using depends_on.
 * Use explicit values instead of variables in examples for clarity.
 
-Guidelines for Extracting Information from AWS SDK for Go v2:
-1. Locate AWS API References:
-  - Use the [AWS SDK for Go v2 documentation](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) to find details about AWS services and their API operations.
-  - Each AWS service has a package, and within that package, client methods represent API operations.
+Guidelines for Extracting Information from AWS SDK for Go v2 documentation:
+1. Locate AWS documentation:
+  - Use the [AWS SDK for Go v2 documentation](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) to find details about AWS services, CRUD operations (i.e., Actions), and input/output structs (i.e., Data Types).
+  - Each AWS service has a package, and within that package, client methods represent CRUD operations.
+  - You can find the API reference documentation for each service on the AWS website. For example, the API reference documentation for AWS AppConfig is available at https://docs.aws.amazon.com/appconfig/latest/APIReference/Welcome.html. The API reference documentation has Actions, Data Types, and Common Parameters sections that correspond to information found in the AWS SDK for Go v2 documentation.
 2. Identify CRUD Operations for a Given Resource:
   - For a resource (e.g., aws_apptest_test_case), find its corresponding service (apptest).
-  - Look for API methods that correspond to CRUD operations:
+  - Look for Client methods that correspond to CRUD operations:
     - Create: Methods like CreateTestCase, using CreateTestCaseInput and returning CreateTestCaseOutput.
     - Read: Methods like GetTestCase, using GetTestCaseInput and returning GetTestCaseOutput.
     - Update: Methods like UpdateTestCase, using UpdateTestCaseInput and returning UpdateTestCaseOutput.
@@ -56,13 +57,17 @@ Guidelines for Extracting Information from AWS SDK for Go v2:
     Describe, Read, List → Get
     Modify → Update
     Remove → Delete
-4. Map API Struct Fields to Terraform Documentation:
-  - Input Struct Fields → Terraform Arguments:
-    - Fields in CreateTestCaseInput become Terraform arguments.
+4. Map Input/Output Structs Fields to Terraform Documentation:
+  - All fields in the input/output structs become the Terraform resource arguments and attributes.
+    - It's important to include all fields.
+    - Some fields are nested structs within other structs and become nested configuration blocks.
+    - All the fields in nested structs need to be included.
+  - Input Structs Fields → Terraform Arguments:
+    - Fields in input structs become Terraform arguments.
     - Arguments can be required or optional.
     - Example: Name in CreateTestCaseInput is a required string argument.
-  - Output Struct Fields → Terraform Attributes:
-    - Fields in CreateTestCaseOutput become Terraform attributes (read-only).
+  - Output Structs Fields → Terraform Attributes:
+    - Fields that are only in output structs become Terraform attributes (read-only).
     - Example: TestCaseId in CreateTestCaseOutput is an attribute, as AWS generates it.
 5. Ensure Clear, Accurate Argument and Attribute Descriptions:
   - Use precise, concise descriptions.
@@ -85,16 +90,20 @@ Add a marker file called `reviewed.marker` in the working directory.
 """
 
 USER_PROMPT_CREATE = """
-Generate Terraform documentation for {resource_name} using the AWS provider. Follow the outlined format and adhere to the rules for example generation. Use the AWS SDK for Go v2 to extract resource details, including available CRUD operations, input and output structures, and required attributes. The final documentation should be structured, complete, and consistent with Terraform's documentation style.
+Generate Terraform AWS Provider documentation for {resource_name} using the Guidelines for Extracting Information from AWS SDK for Go v2 documentation. Follow the outlined format and adhere to the rules for example generation. Use the AWS SDK for Go v2 documentation to extract resource details, including available CRUD operations, input/output structs, and required attributes. The final documentation should be structured, complete, and consistent with Terraform's documentation style.
 
 Tasks (Executed in Order):
 1. Navigate to the working directory {working_directory} using cd.
 2. Download the relevant AWS SDK for Go v2 documentation for {resource_name} using curl.
-3. Inspect the CRUD operations/methods and input/output structs using cat.
-4. Create a documentation file ({resource_name}.html.markdown) based on the findings.
-5. If documentation creation succeeds, create a marker file (created.marker) in the working directory.
+3. Inspect the CRUD operations (client methods) and input/output structs using cat.
+4. Download the API reference documentation for {resource_name} using curl for all relevant CRUD operations (i.e., Actions) and input/output structs (i.e., Data Types) from the AWS website.
+5. Inspect the API reference documentation using cat to ensure all relevant information is captured.
+6. Extract the necessary information from the AWS SDK for Go v2 documentation and API reference documentation to create the Terraform documentation.
+7. Double check your work between the AWS SDK for Go v2 documentation and API reference documentation to ensure all unique input/output structs fields are included.
+8. Create a documentation file ({resource_name}.html.markdown) based on the findings.
+9. If documentation creation succeeds, create a marker file (created.marker) in the working directory.
 
-Format example for documentation for a resource called `aws_batch_job_queue`:
+Example documentation for a resource called `aws_batch_job_queue`:
 
 ---
 subcategory: "Batch"

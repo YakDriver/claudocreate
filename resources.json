@@ -1,6 +1,6 @@
 {
     "target_resources": [
-        "aws_apptest_test_case",
-        "aws_arczonalshift_practice_run_configuration"
+        "aws_braket_quantum_task",
+        "aws_deadline_job"
     ]
 }
